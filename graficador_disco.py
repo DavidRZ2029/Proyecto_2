@@ -185,7 +185,30 @@ def pedir_carpeta():
 # =============================================================
 # FUNCION 8: construir_reportes
 # =============================================================
+def construir_reportes(archivos_grandes, dirs_con_archivos):
+    """
+    Descripcion: A partir de las listas recolectadas durante el analisis, construye las lineas de texto para los dos reportes: top 10 archivos mas grandes y top 10 directorios con mas archivos directos.
+    Entradas:
+        archivos_grandes  (list) -> tuplas (ruta_archivo, tamano).
+        dirs_con_archivos (list) -> tuplas (ruta_dir, cantidad).
+    Salidas: (tuple) -> (lineas_archivos, lineas_dirs), dos listas de strings.
+    Restricciones: ninguna.
+    """
+    top_archivos = sorted(archivos_grandes, key=lambda x: x[1], reverse=True)[:10]
+    lineas_archivos = []
+    for i, (ruta_arch, tam) in enumerate(top_archivos, 1):
+        nombre = os.path.basename(ruta_arch)
+        lineas_archivos.append(f"{i:2}. {nombre}  [{convertir_tamano(tam)}]")
+        lineas_archivos.append(f"     {ruta_arch}")
 
+    top_dirs = sorted(dirs_con_archivos, key=lambda x: x[1], reverse=True)[:10]
+    lineas_dirs = []
+    for i, (ruta_dir, cantidad) in enumerate(top_dirs, 1):
+        nombre = os.path.basename(ruta_dir)
+        lineas_dirs.append(f"{i:2}. {nombre}  [{cantidad} archivos]")
+        lineas_dirs.append(f"     {ruta_dir}")
+
+    return lineas_archivos, lineas_dirs
 
 
 # =============================================================
