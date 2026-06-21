@@ -214,8 +214,34 @@ def construir_reportes(archivos_grandes, dirs_con_archivos):
 # =============================================================
 # FUNCION 9: main  (FUNCION PRINCIPAL)
 # =============================================================
+def main():
+    """
+    Descripcion: Funcion principal. Inicializa Pygame, pide la carpeta, ejecuta el analisis y dibuja en bucle el grafico y los reportes hasta que el usuario cierra la ventana.
+    Entradas: Ninguna.
+    Salidas: Ninguna.
+    Restricciones: requiere que Pygame este instalado.
+    """
+    pygame.init()
+    pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
+    pygame.display.set_caption("Graficador de Espacio en Disco")
+    reloj = pygame.time.Clock()
 
+    fuente = pygame.font.SysFont("consolas", 14)
+    fuente_titulo = pygame.font.SysFont("arial", 16, bold=True)
+    fuente_boton = pygame.font.SysFont("arial", 16, bold=True)
 
+    ruta_actual = ""
+    datos = []
+    lineas_archivos = []
+    lineas_dirs = []
+    mensaje = "Presione el boton para seleccionar una carpeta."
+
+    boton_rect = pygame.Rect(20, 15, 220, 36)
+
+    # =====================================================
+    # FUNCION INTERNA: ejecutar_analisis
+    # =====================================================
+    pass
 
 
 
