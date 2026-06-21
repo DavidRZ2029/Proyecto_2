@@ -22,7 +22,23 @@ PALETA = [
 # =============================================================
 # FUNCION 1: convertir_tamano
 # =============================================================
+def convertir_tamano(bytes_totales):
+    """
+    Descripcion: Convierte un tamano en bytes a la unidad mas legible (B, KB, MB, GB o TB).
+    Entradas:  bytes_totales (int) -> tamano en bytes.
+    Salidas:   (str) -> texto con el tamano y su unidad. Ej: "3.50 MB".
+    Restricciones: bytes_totales debe ser un entero mayor o igual a 0.
+    """
+    if bytes_totales < 1024:
+        return str(bytes_totales) + " B"
 
+    valor = bytes_totales / 1024
+    for unidad in ["KB", "MB", "GB"]:
+        if valor < 1024:
+            return f"{valor:.2f} {unidad}"
+        valor = valor / 1024
+
+    return f"{valor:.2f} TB"
 
 
 # =============================================================
