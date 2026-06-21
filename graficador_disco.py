@@ -40,7 +40,26 @@ PALETA = [
 # =============================================================
 # FUNCION 4: dibujar_texto
 # =============================================================
-
+def dibujar_texto(pantalla, fuente, texto, x, y, color=NEGRO, alinear_derecha=False):
+    """
+    Descripcion: Dibuja una linea de texto en la pantalla.
+    Entradas:
+        pantalla                  -> superficie de Pygame donde dibujar.
+        fuente                    -> fuente de Pygame a usar.
+        texto           (str)     -> texto a mostrar.
+        x, y            (int)     -> posicion donde colocar el texto.
+        color           (tuple)   -> color RGB del texto.
+        alinear_derecha (bool)    -> si True, el texto termina en x.
+    Salidas: Ninguna (dibuja directamente en pantalla).
+    Restricciones: la fuente debe estar inicializada.
+    """
+    imagen = fuente.render(texto, True, color)
+    rect = imagen.get_rect()
+    if alinear_derecha:
+        rect.topright = (x, y)
+    else:
+        rect.topleft = (x, y)
+    pantalla.blit(imagen, rect)
 
 
 # =============================================================
