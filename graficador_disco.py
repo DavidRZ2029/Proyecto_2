@@ -44,7 +44,51 @@ def convertir_tamano(bytes_totales):
 # =============================================================
 # FUNCION 2: analizar_directorio  (RECURSIVA)
 # =============================================================
+def analizar_directorio(ruta, profundidad, archivos_grandes, dirs_con_archivos):
+    """
+        Descripcion: Recorre una carpeta y todas sus subcarpetas usando recursion. Suma el tamano de los archivos y baja a las subcarpetas hasta MAX_PROFUNDIDAD niveles. Tambien guarda informacion para los reportes top-10.
+        Entradas:
+        ruta              (str)  -> ruta absoluta de la carpeta a analizar.
+        profundidad       (int)  -> nivel actual de recursion (inicia en 0).
+        archivos_grandes  (list) -> lista compartida donde se acumulan
+                                    tuplas (ruta_archivo, tamano).
+        dirs_con_archivos (list) -> lista compartida donde se acumulan
+                                    tuplas (ruta_dir, cantidad_archivos).
+        Salidas: (int) -> tamano total en bytes de la carpeta y sus subcarpetas.
+        Restricciones: profundidad no debe superar MAX_PROFUNDIDAD.
+    """
+    tamano_total = 0
+    cantidad_archivos = 0
 
+    try:
+        elementos = os.listdir(ruta)
+    except (PermissionError, OSError):
+        return 0
+
+    for nombre in elementos:
+        ruta_elemento = os.path.join(ruta, nombre)
+
+        if os.path.isfile(ruta_elemento):
+            try:
+                tam = os.path.getsize(ruta_elemento)
+                tamano_total += tam
+                cantidad_archivos += 1
+                archivos_grandes.append((ruta_elemento, tam))
+            except OSError:
+                pass
+            
+        elif os.path.isdir(ruta_elemento) and profundidad < MAX_PROFUNDIDAD:
+            tam_sub = analizar_directorio(
+                ruta_elemento,
+                profundidad + 1,
+                archivos_grandes,
+                dirs_con_archivos
+            )
+            tamano_total += tam_sub
+
+    dirs_con_archivos.append((ruta, cantidad_archivos))
+
+    return tamano_total
 
 
 # =============================================================
