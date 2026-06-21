@@ -71,7 +71,30 @@ def dibujar_texto(pantalla, fuente, texto, x, y, color=NEGRO, alinear_derecha=Fa
 # =============================================================
 # FUNCION 6: dibujar_lista
 # =============================================================
+def dibujar_lista(pantalla, fuente, fuente_titulo, titulo, lineas, x, y, ancho):
+    """
+    Descripcion: Dibuja un panel con un titulo y una lista de lineas de texto (se usa para los dos reportes top-10).
+    Entradas:
+        pantalla                -> donde se dibuja.
+        fuente                  -> fuente para las lineas.
+        fuente_titulo           -> fuente para el titulo.
+        titulo        (str)     -> titulo del panel.
+        lineas        (list)    -> lista de strings a mostrar.
+        x, y          (int)     -> esquina superior izquierda del panel.
+        ancho         (int)     -> ancho del panel.
+    Salidas: Ninguna (dibuja directamente en pantalla).
+    Restricciones: ninguna.
+    """
+    dibujar_texto(pantalla, fuente_titulo, titulo, x, y, GRIS_OSCURO)
+    pygame.draw.line(pantalla, GRIS_OSCURO, (x, y + 24), (x + ancho, y + 24), 1)
 
+    linea_y = y + 32
+    for texto in lineas:
+        maximo_caracteres = ancho // 7
+        if len(texto) > maximo_caracteres:
+            texto = "..." + texto[-(maximo_caracteres - 3):]
+        dibujar_texto(pantalla, fuente, texto, x, linea_y, NEGRO)
+        linea_y += 18
 
 
 # =============================================================
