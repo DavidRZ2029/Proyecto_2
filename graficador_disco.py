@@ -100,7 +100,26 @@ def dibujar_lista(pantalla, fuente, fuente_titulo, titulo, lineas, x, y, ancho):
 # =============================================================
 # FUNCION 7: pedir_carpeta
 # =============================================================
-
+def pedir_carpeta():
+    """
+    Descripcion: Abre una ventana del sistema para que el usuario elija una carpeta. Si tkinter no esta disponible, pide la ruta por la consola.
+    Entradas: Ninguna.
+    Salidas: (str) -> ruta de la carpeta elegida, o cadena vacia si se cancela.
+    Restricciones: ninguna.
+    """
+    try:
+        import tkinter
+        from tkinter import filedialog
+        raiz = tkinter.Tk()
+        raiz.withdraw()
+        ruta = filedialog.askdirectory(title="Seleccione una carpeta para analizar")
+        raiz.destroy()
+        return ruta
+    except Exception:
+        try:
+            return input("Escriba la ruta de la carpeta a analizar: ").strip()
+        except Exception:
+            return ""
 
 
 # =============================================================
