@@ -42,7 +42,86 @@ def convertir_tamano(bytes_totales):
 
 
 # =============================================================
-# FUNCION 2: analizar_directorio  (RECURSIVA)
+# FUNCION 2: dibujar_texto
+# =============================================================
+def dibujar_texto(pantalla, fuente, texto, x, y, color=NEGRO, alinear_derecha=False):
+    """
+    Descripcion: Dibuja una linea de texto en la pantalla.
+    Entradas:
+        pantalla                  -> superficie de Pygame donde dibujar.
+        fuente                    -> fuente de Pygame a usar.
+        texto           (str)     -> texto a mostrar.
+        x, y            (int)     -> posicion donde colocar el texto.
+        color           (tuple)   -> color RGB del texto.
+        alinear_derecha (bool)    -> si True, el texto termina en x.
+    Salidas: Ninguna (dibuja directamente en pantalla).
+    Restricciones: la fuente debe estar inicializada.
+    """
+    imagen = fuente.render(texto, True, color)
+    rect = imagen.get_rect()
+    if alinear_derecha:
+        rect.topright = (x, y)
+    else:
+        rect.topleft = (x, y)
+    pantalla.blit(imagen, rect)
+
+
+# =============================================================
+# FUNCION 3: dibujar_lista
+# =============================================================
+def dibujar_lista(pantalla, fuente, fuente_titulo, titulo, lineas, x, y, ancho):
+    """
+    Descripcion: Dibuja un panel con un titulo y una lista de lineas de texto (se usa para los dos reportes top-10).
+    Entradas:
+        pantalla                -> donde se dibuja.
+        fuente                  -> fuente para las lineas.
+        fuente_titulo           -> fuente para el titulo.
+        titulo        (str)     -> titulo del panel.
+        lineas        (list)    -> lista de strings a mostrar.
+        x, y          (int)     -> esquina superior izquierda del panel.
+        ancho         (int)     -> ancho del panel.
+    Salidas: Ninguna (dibuja directamente en pantalla).
+    Restricciones: ninguna.
+    """
+    dibujar_texto(pantalla, fuente_titulo, titulo, x, y, GRIS_OSCURO)
+    pygame.draw.line(pantalla, GRIS_OSCURO, (x, y + 24), (x + ancho, y + 24), 1)
+
+    linea_y = y + 32
+    for texto in lineas:
+        maximo_caracteres = ancho // 7
+        if len(texto) > maximo_caracteres:
+            texto = "..." + texto[-(maximo_caracteres - 3):]
+        dibujar_texto(pantalla, fuente, texto, x, linea_y, NEGRO)
+        linea_y += 18
+
+
+# =============================================================
+# FUNCION 4: pedir_carpeta
+# =============================================================
+def pedir_carpeta():
+    """
+    Descripcion: Abre una ventana del sistema para que el usuario elija una carpeta. Si tkinter no esta disponible, pide la ruta por la consola.
+    Entradas: Ninguna.
+    Salidas: (str) -> ruta de la carpeta elegida, o cadena vacia si se cancela.
+    Restricciones: ninguna.
+    """
+    try:
+        import tkinter
+        from tkinter import filedialog
+        raiz = tkinter.Tk()
+        raiz.withdraw()
+        ruta = filedialog.askdirectory(title="Seleccione una carpeta para analizar")
+        raiz.destroy()
+        return ruta
+    except Exception:
+        try:
+            return input("Escriba la ruta de la carpeta a analizar: ").strip()
+        except Exception:
+            return ""
+
+
+# =============================================================
+# FUNCION 5: analizar_directorio  (RECURSIVA)
 # =============================================================
 def analizar_directorio(ruta, profundidad, archivos_grandes, dirs_con_archivos):
     """
@@ -92,7 +171,7 @@ def analizar_directorio(ruta, profundidad, archivos_grandes, dirs_con_archivos):
 
 
 # =============================================================
-# FUNCION 3: obtener_subdirectorios
+# FUNCION 6: obtener_subdirectorios
 # =============================================================
 def obtener_subdirectorios(ruta_raiz, archivos_grandes, dirs_con_archivos):
     """
@@ -137,34 +216,8 @@ def obtener_subdirectorios(ruta_raiz, archivos_grandes, dirs_con_archivos):
     return resultado
 
 
-
 # =============================================================
-# FUNCION 4: dibujar_texto
-# =============================================================
-def dibujar_texto(pantalla, fuente, texto, x, y, color=NEGRO, alinear_derecha=False):
-    """
-    Descripcion: Dibuja una linea de texto en la pantalla.
-    Entradas:
-        pantalla                  -> superficie de Pygame donde dibujar.
-        fuente                    -> fuente de Pygame a usar.
-        texto           (str)     -> texto a mostrar.
-        x, y            (int)     -> posicion donde colocar el texto.
-        color           (tuple)   -> color RGB del texto.
-        alinear_derecha (bool)    -> si True, el texto termina en x.
-    Salidas: Ninguna (dibuja directamente en pantalla).
-    Restricciones: la fuente debe estar inicializada.
-    """
-    imagen = fuente.render(texto, True, color)
-    rect = imagen.get_rect()
-    if alinear_derecha:
-        rect.topright = (x, y)
-    else:
-        rect.topleft = (x, y)
-    pantalla.blit(imagen, rect)
-
-
-# =============================================================
-# FUNCION 5: dibujar_barras
+# FUNCION 7: dibujar_barras
 # =============================================================
 def dibujar_barras(pantalla, fuente, datos, x, y, ancho, alto):
     """
@@ -215,60 +268,6 @@ def dibujar_barras(pantalla, fuente, datos, x, y, ancho, alto):
 
         dibujar_texto(pantalla, fuente, convertir_tamano(tamano),
                       x + margen_nombre + largo + 8, barra_y + 5, color)
-
-
-# =============================================================
-# FUNCION 6: dibujar_lista
-# =============================================================
-def dibujar_lista(pantalla, fuente, fuente_titulo, titulo, lineas, x, y, ancho):
-    """
-    Descripcion: Dibuja un panel con un titulo y una lista de lineas de texto (se usa para los dos reportes top-10).
-    Entradas:
-        pantalla                -> donde se dibuja.
-        fuente                  -> fuente para las lineas.
-        fuente_titulo           -> fuente para el titulo.
-        titulo        (str)     -> titulo del panel.
-        lineas        (list)    -> lista de strings a mostrar.
-        x, y          (int)     -> esquina superior izquierda del panel.
-        ancho         (int)     -> ancho del panel.
-    Salidas: Ninguna (dibuja directamente en pantalla).
-    Restricciones: ninguna.
-    """
-    dibujar_texto(pantalla, fuente_titulo, titulo, x, y, GRIS_OSCURO)
-    pygame.draw.line(pantalla, GRIS_OSCURO, (x, y + 24), (x + ancho, y + 24), 1)
-
-    linea_y = y + 32
-    for texto in lineas:
-        maximo_caracteres = ancho // 7
-        if len(texto) > maximo_caracteres:
-            texto = "..." + texto[-(maximo_caracteres - 3):]
-        dibujar_texto(pantalla, fuente, texto, x, linea_y, NEGRO)
-        linea_y += 18
-
-
-# =============================================================
-# FUNCION 7: pedir_carpeta
-# =============================================================
-def pedir_carpeta():
-    """
-    Descripcion: Abre una ventana del sistema para que el usuario elija una carpeta. Si tkinter no esta disponible, pide la ruta por la consola.
-    Entradas: Ninguna.
-    Salidas: (str) -> ruta de la carpeta elegida, o cadena vacia si se cancela.
-    Restricciones: ninguna.
-    """
-    try:
-        import tkinter
-        from tkinter import filedialog
-        raiz = tkinter.Tk()
-        raiz.withdraw()
-        ruta = filedialog.askdirectory(title="Seleccione una carpeta para analizar")
-        raiz.destroy()
-        return ruta
-    except Exception:
-        try:
-            return input("Escriba la ruta de la carpeta a analizar: ").strip()
-        except Exception:
-            return ""
 
 
 # =============================================================
