@@ -31,8 +31,8 @@ PALETA = [
 def convertir_tamano(bytes_totales):
     """
     Descripcion: Convierte un tamano en bytes a la unidad mas legible (B, KB, MB, GB o TB).
-    Entradas:  bytes_totales (int) -> tamano en bytes.
-    Salidas:   (str) -> texto con el tamano y su unidad. Ej: "3.50 MB".
+    Entradas:  bytes_totales entero ... tamaño en bytes.
+    Salidas:  Palabra ... texto con el tamaño y su unidad. 
     Restricciones: bytes_totales debe ser un entero mayor o igual a 0.
     """
     if bytes_totales < 1024:
@@ -54,12 +54,12 @@ def dibujar_texto(pantalla, fuente, texto, x, y, color = negro, alinear_derecha=
     """
     Descripcion: Dibuja una linea de texto en la pantalla.
     Entradas:
-        pantalla                  -> superficie de Pygame donde dibujar.
-        fuente                    -> fuente de Pygame a usar.
-        texto           (str)     -> texto a mostrar.
-        x, y            (int)     -> posicion donde colocar el texto.
-        color           (tuple)   -> color RGB del texto.
-        alinear_derecha (bool)    -> si True, el texto termina en x.
+        pantalla          ... superficie de Pygame donde dibujar.
+        fuente     ...fuente de Pygame a usar.
+        texto           Texto   ... texto a mostrar.
+        x, y            Enterp    ... posicion donde colocar el texto.
+        color           Dupla  ... color RGB del texto.
+        alinear_derecha  booleano  ... si True, el texto termina en x.
     Salidas: Ninguna (dibuja directamente en pantalla).
     Restricciones: la fuente debe estar inicializada.
     """
@@ -79,13 +79,13 @@ def dibujar_lista(pantalla, fuente, fuente_titulo, titulo, lineas, x, y, ancho):
     """
     Descripcion: Dibuja un panel con un titulo y una lista de lineas de texto (se usa para los dos reportes top-10).
     Entradas:
-        pantalla                -> donde se dibuja.
-        fuente                  -> fuente para las lineas.
-        fuente_titulo           -> fuente para el titulo.
-        titulo        (str)     -> titulo del panel.
-        lineas        (list)    -> lista de strings a mostrar.
-        x, y          (int)     -> esquina superior izquierda del panel.
-        ancho         (int)     -> ancho del panel.
+        pantalla         ... donde se dibuja.
+        fuente            ... fuente para las lineas.
+        fuente_titulo        ... fuente para el titulo.
+        titulo        Texto...titulo del panel.
+        lineas        lista   -> lista de strings a mostrar.
+        x, y          ENtero    -> esquina superior izquierda del panel.
+        ancho        Entero     -> ancho del panel.
     Salidas: Ninguna (dibuja directamente en pantalla).
     Restricciones: ninguna.
     """
@@ -108,7 +108,7 @@ def pedir_carpeta():
     """
     Descripcion: Abre una ventana del sistema para que el usuario elija una carpeta. Si tkinter no esta disponible, pide la ruta por la consola.
     Entradas: Ninguna.
-    Salidas: (str) -> ruta de la carpeta elegida, o cadena vacia si se cancela.
+    Salidas: Texto... ruta de la carpeta elegida, o cadena vacia si se cancela.
     Restricciones: ninguna.
     """
     try:
@@ -133,13 +133,11 @@ def analizar_directorio(ruta, profundidad, archivos_grandes, dirs_con_archivos):
     """
         Descripcion: Recorre una carpeta y todas sus subcarpetas usando recursion. Suma el tamano de los archivos y baja a las subcarpetas hasta MAX_PROFUNDIDAD niveles. Tambien guarda informacion para los reportes top-10.
         Entradas:
-        ruta              (str)  -> ruta absoluta de la carpeta a analizar.
-        profundidad       (int)  -> nivel actual de recursion (inicia en 0).
-        archivos_grandes  (list) -> lista compartida donde se acumulan
-                                    tuplas (ruta_archivo, tamano).
-        dirs_con_archivos (list) -> lista compartida donde se acumulan
-                                    tuplas (ruta_dir, cantidad_archivos).
-        Salidas: (int) -> tamano total en bytes de la carpeta y sus subcarpetas.
+        ruta              Texto... ruta absoluta de la carpeta a analizar.
+        profundidad      Entero...nivel actual de recursion (inicia en 0).
+        archivos_grandes  lista... lista compartida donde se acumulan tuplas (ruta_archivo, tamaño).
+        dirs_con_archivos lista... lista compartida donde se acumulan tuplas (ruta_dir, cantidad_archivos).
+        Salidas: Entero... tamano total en bytes de la carpeta y sus subcarpetas.
         Restricciones: profundidad no debe superar MAX_PROFUNDIDAD.
     """
     tamano_total = 0
@@ -183,11 +181,10 @@ def obtener_subdirectorios(ruta_raiz, archivos_grandes, dirs_con_archivos):
     """
     Descripcion: Obtiene los hijos directos (primer nivel) de la carpeta raiz junto con su tamano total, para usarlos en el grafico. Por cada subcarpeta llama a analizar_directorio.
     Entradas:
-        ruta_raiz         (str)  -> carpeta principal seleccionada.
-        archivos_grandes  (list) -> lista donde se acumulan archivos.
-        dirs_con_archivos (list) -> lista donde se acumulan directorios.
-    Salidas: (list) -> lista de tuplas (nombre, tamano_bytes) ordenada
-             de mayor a menor tamano.
+        ruta_raiz        TEcto... carpeta principal seleccionada.
+        archivos_grandes  Lista... lista donde se acumulan archivos.
+        dirs_con_archivos Lista.. lista donde se acumulan directorios.
+    Salidas: Lista... lista de tuplas (nombre, tamano_bytes) ordenada de mayor a menor tamano.
     Restricciones: solo procesa el primer nivel de subcarpetas.
     """
     resultado = []
@@ -229,18 +226,17 @@ def dibujar_barras(pantalla, fuente, datos, x, y, ancho, alto):
     """
     Descripcion: Dibuja un grafico de barras horizontales. El largo de cada barra es proporcional al tamano de la carpeta y cada una lleva un color distinto.
     Entradas:
-        pantalla (Surface) -> donde se dibuja.
-        fuente   (Font)    -> fuente para los textos.
-        datos    (list)    -> tuplas (nombre, tamano_bytes).
-        x, y     (int)     -> esquina superior izquierda del area del grafico.
-        ancho    (int)     -> ancho disponible para el grafico.
-        alto     (int)     -> alto disponible para el grafico.
+        pantalla Surface -> donde se dibuja.
+        fuente   Font    -> fuente para los textos.
+        datos    Lista de ... tuplas (nombre, tamano_bytes).
+        x, y     Entero... esquina superior izquierda del area del grafico.
+        ancho    Entero... ancho disponible para el grafico.
+        alto     Entero... alto disponible para el grafico.
     Salidas: Ninguna (dibuja directamente en pantalla).
     Restricciones: datos puede estar vacio (se muestra un aviso).
     """
     if not datos:
-        dibujar_texto(pantalla, fuente, "No hay subcarpetas para mostrar.",
-                      x, y, grisblanco)
+        dibujar_texto(pantalla, fuente, "No hay subcarpetas para mostrar.", x, y, grisblanco)
         return
 
     tamano_maximo = max(tam for _, tam in datos)
@@ -283,8 +279,8 @@ def construir_reportes(archivos_grandes, dirs_con_archivos):
     """
     Descripcion: A partir de las listas recolectadas durante el analisis, construye las lineas de texto para los dos reportes: top 10 archivos mas grandes y top 10 directorios con mas archivos directos.
     Entradas:
-        archivos_grandes  (list) -> tuplas (ruta_archivo, tamano).
-        dirs_con_archivos (list) -> tuplas (ruta_dir, cantidad).
+        archivos_grandes  lista..tuplas (ruta_archivo, tamano).
+        dirs_con_archivos lista...tuplas (ruta_dir, cantidad).
     Salidas: (tuple) -> (lineas_archivos, lineas_dirs), dos listas de strings.
     Restricciones: ninguna.
     """
@@ -338,7 +334,7 @@ def main():
     def ejecutar_analisis():
         """
         Descripcion:Pide una carpeta, la analiza y actualiza las variables de estado con los nuevos resultados.
-        Entradas: Ninguna (usa el estado de main).
+        Entradas: Ninguna (yq que para aqui usa el estado de main).
         Salidas: Ninguna (modifica variables externas con 'nonlocal').
         Restricciones: el usuario debe elegir una carpeta valida.
         """
@@ -363,8 +359,7 @@ def main():
 
         datos = obtener_subdirectorios(ruta, archivos_grandes, dirs_con_archivos)
 
-        lineas_archivos, lineas_dirs = construir_reportes(
-            archivos_grandes, dirs_con_archivos)
+        lineas_archivos, lineas_dirs = construir_reportes(archivos_grandes, dirs_con_archivos)
 
         ruta_actual = ruta
         mensaje = f"Ruta: {ruta}   (subcarpetas: {len(datos)})"
@@ -393,26 +388,18 @@ def main():
         pygame.draw.rect(pantalla, grisoscuro, (0, 0, anchodelaventana, 66))
 
         pygame.draw.rect(pantalla, verde, boton_rect, border_radius=6)
-        dibujar_texto(pantalla, fuente_boton, "Seleccionar carpeta",
-                      boton_rect.x + 18, boton_rect.y + 8, blanco)
+        dibujar_texto(pantalla, fuente_boton, "Seleccionar carpeta", boton_rect.x + 18, boton_rect.y + 8, blanco)
 
         dibujar_texto(pantalla, fuente, mensaje, 260, 26, blanco)
 
-        dibujar_texto(pantalla, fuente_titulo,
-                      "Distribucion de espacio por carpeta (primer nivel)",
-                      20, 80, grisoscuro)
+        dibujar_texto(pantalla, fuente_titulo,"Distribucion de espacio por carpeta (primer nivel)", 20, 80, grisoscuro)
         dibujar_barras(pantalla, fuente, datos, 20, 110, anchodelaventana - 40, 320)
 
-        pygame.draw.line(pantalla, (200, 200, 200),
-                         (20, 450), (anchodelaventana - 20, 450), 1)
+        pygame.draw.line(pantalla, (200, 200, 200), (20, 450), (anchodelaventana - 20, 450), 1)
 
         mitad = anchodelaventana // 2
-        dibujar_lista(pantalla, fuente, fuente_titulo,
-                      "Top 10 archivos mas grandes",
-                      lineas_archivos, 20, 465, mitad - 40)
-        dibujar_lista(pantalla, fuente, fuente_titulo,
-                      "Top 10 directorios con mas archivos",
-                      lineas_dirs, mitad + 10, 465, mitad - 40)
+        dibujar_lista(pantalla, fuente, fuente_titulo, "Top 10 archivos mas grandes", lineas_archivos, 20, 465, mitad - 40)
+        dibujar_lista(pantalla, fuente, fuente_titulo,"Top 10 directorios con mas archivos", lineas_dirs, mitad + 10, 465, mitad - 40)
 
         pygame.display.flip()
         reloj.tick(30)
