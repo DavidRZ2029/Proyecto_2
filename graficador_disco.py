@@ -1,3 +1,9 @@
+
+"""Proyecto 2 
+Antonio Ye Lu 2025125809
+DAvid Rodriguez Zuñiga
+Graficadoe de Disco """
+
 import os
 import pygame
 
