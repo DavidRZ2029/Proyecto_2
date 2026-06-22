@@ -156,7 +156,7 @@ def analizar_directorio(ruta, profundidad, archivos_grandes, dirs_con_archivos):
             except OSError:
                 pass
             
-        elif os.path.isdir(ruta_elemento) and profundidad < MAX_PROFUNDIDAD:
+        elif os.path.isdir(ruta_elemento) and profundidad < profundidadpermitidadanalizar:
             tam_sub = analizar_directorio(
                 ruta_elemento,
                 profundidad + 1,
@@ -310,7 +310,7 @@ def main():
     Restricciones: requiere que Pygame este instalado.
     """
     pygame.init()
-    pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
+    pantalla = pygame.display.set_mode((anchodelaventana,altodelaventana))
     pygame.display.set_caption("Graficador de Espacio en Disco")
     reloj = pygame.time.Clock()
 
@@ -384,7 +384,7 @@ def main():
 
         pantalla.fill(GRIS)
 
-        pygame.draw.rect(pantalla, GRIS_OSCURO, (0, 0, ANCHO_VENTANA, 66))
+        pygame.draw.rect(pantalla, GRIS_OSCURO, (0, 0, anchodelaventana, 66))
 
         pygame.draw.rect(pantalla, VERDE, boton_rect, border_radius=6)
         dibujar_texto(pantalla, fuente_boton, "Seleccionar carpeta",
@@ -395,12 +395,12 @@ def main():
         dibujar_texto(pantalla, fuente_titulo,
                       "Distribucion de espacio por carpeta (primer nivel)",
                       20, 80, GRIS_OSCURO)
-        dibujar_barras(pantalla, fuente, datos, 20, 110, ANCHO_VENTANA - 40, 320)
+        dibujar_barras(pantalla, fuente, datos, 20, 110, anchodelaventana - 40, 320)
 
         pygame.draw.line(pantalla, (200, 200, 200),
-                         (20, 450), (ANCHO_VENTANA - 20, 450), 1)
+                         (20, 450), (anchodelaventana - 20, 450), 1)
 
-        mitad = ANCHO_VENTANA // 2
+        mitad = anchodelaventan // 2
         dibujar_lista(pantalla, fuente, fuente_titulo,
                       "Top 10 archivos mas grandes",
                       lineas_archivos, 20, 465, mitad - 40)
