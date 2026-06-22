@@ -400,7 +400,7 @@ def main():
         pygame.draw.line(pantalla, (200, 200, 200),
                          (20, 450), (anchodelaventana - 20, 450), 1)
 
-        mitad = anchodelaventan // 2
+        mitad = anchodelaventana // 2
         dibujar_lista(pantalla, fuente, fuente_titulo,
                       "Top 10 archivos mas grandes",
                       lineas_archivos, 20, 465, mitad - 40)
